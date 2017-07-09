@@ -21431,7 +21431,7 @@ var PomodoroTimer = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (PomodoroTimer.__proto__ || Object.getPrototypeOf(PomodoroTimer)).call(this));
 
     _this.state = {
-      time: 60,
+      time: 1500,
       action: "working"
     };
     return _this;

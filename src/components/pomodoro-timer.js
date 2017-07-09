@@ -11,7 +11,7 @@ export default class PomodoroTimer extends React.Component{
     super();
 
     this.state = {
-      time : 60,
+      time : 1500,
       action : "working",
     }
   }
