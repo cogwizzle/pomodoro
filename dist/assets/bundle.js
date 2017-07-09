@@ -21373,7 +21373,6 @@ var PomodoroTimerControls = function (_React$Component) {
   }, {
     key: "_skip",
     value: function _skip() {
-      this.props.incrementIteration();
       if (this.props.iteration > 0 && this.props.iteration % 8 == 0) {
         this.props.setTime(900);
         if (this._interval) {
@@ -21390,6 +21389,7 @@ var PomodoroTimerControls = function (_React$Component) {
           this._toggleCountDown();
         }
       }
+      this.props.incrementIteration();
     }
 
     /**
@@ -21452,7 +21452,7 @@ var PomodoroTimer = function (_React$Component) {
 
     _this.state = {
       time: 1500,
-      iteration: 1 // Starts at 1.  Wierd but allows it to work as expceted on first iteration.
+      iteration: 2
     };
     return _this;
   }

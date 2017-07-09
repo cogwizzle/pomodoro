@@ -12,7 +12,7 @@ export default class PomodoroTimer extends React.Component{
 
     this.state = {
       time : 1500,
-      iteration : 1, // Starts at 1.  Wierd but allows it to work as expceted on first iteration.
+      iteration : 2,
     }
   }
 

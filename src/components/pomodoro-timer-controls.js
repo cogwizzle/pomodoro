@@ -68,7 +68,6 @@ export default class PomodoroTimerControls extends React.Component{
   }
 
   _skip(){
-    this.props.incrementIteration();
     if(this.props.iteration > 0 && this.props.iteration % 8 == 0){
       this.props.setTime(900);
       if(this._interval){
@@ -85,6 +84,7 @@ export default class PomodoroTimerControls extends React.Component{
         this._toggleCountDown();
       }
     }
+    this.props.incrementIteration();
   }
 
   /**
