@@ -21313,10 +21313,10 @@ var PomodoroTimerControls = function (_React$Component) {
 
       if (!this._interval) {
         this._interval = setInterval(function () {
-          if (_this2.props.time > -1) {
+          if (_this2.props.time > 0) {
             _this2.props.setTime(_this2.props.time - 1);
           } else {
-            _this2.props.setTime(2400);
+            _this2.props.setTime(1500);
             _this2._toggleCountDown();
           }
         }, 1000);

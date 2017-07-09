@@ -30,10 +30,10 @@ export default class PomodoroTimerControls extends React.Component{
   _toggleCountDown(){
     if(!this._interval){
       this._interval = setInterval(() => {
-        if(this.props.time > -1){
+        if(this.props.time > 0){
           this.props.setTime(this.props.time - 1);
         }else{
-          this.props.setTime(2400);
+          this.props.setTime(1500);
           this._toggleCountDown();
         }
       }, 1000);
