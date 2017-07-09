@@ -25,13 +25,18 @@ export default class PomodoroTimerControls extends React.Component{
 
     var buttonStyle = {
       "boxShadow": "5px 0px 5px #888888",
-      "width" : "100%",
+      "width" : "50%",
       "border":"2px solid",
+    }
+
+    var skipButtonStyle = {
+
     }
 
     return (
       <div style={wrapper}>
         <button style={buttonStyle} onClick={this._toggleCountDown.bind(this)}><i className={this.state.faClass} /></button>
+        <button style={buttonStyle} onClick={this._skip.bind(this)}><i className="fa fa-fast-forward" /></button>
       </div>
     );
   }
@@ -47,15 +52,7 @@ export default class PomodoroTimerControls extends React.Component{
           this.props.setTime(this.props.time - 1);
         }else{
           audio.play();
-          if(this.props.action == "working"){
-            this.props.setTime(300);
-            this._toggleCountDown();
-            this.props.setAction("break");
-          }else{
-            this.props.setTime(1500);
-            this._toggleCountDown();
-            this.props.setAction("working");
-          }
+          this._skip();
         }
       }, 1000);
       this.setState({
@@ -67,6 +64,26 @@ export default class PomodoroTimerControls extends React.Component{
       this.setState({
         faClass : "fa fa-play"
       });
+    }
+  }
+
+  _skip(){
+    this.props.incrementIteration();
+    if(this.props.iteration > 0 && this.props.iteration % 8 == 0){
+      this.props.setTime(900);
+      if(this._interval){
+        this._toggleCountDown();
+      }
+    }else if(this.props.iteration == 0 || (this.props.iteration % 2 == 0)){
+      this.props.setTime(300);
+      if(this._interval){
+        this._toggleCountDown();
+      }
+    }else{
+      this.props.setTime(1500);
+      if(this._interval){
+        this._toggleCountDown();
+      }
     }
   }
 

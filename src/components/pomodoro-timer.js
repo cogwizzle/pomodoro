@@ -12,7 +12,7 @@ export default class PomodoroTimer extends React.Component{
 
     this.state = {
       time : 1500,
-      action : "working",
+      iteration : 1, // Starts at 1.  Wierd but allows it to work as expceted on first iteration.
     }
   }
 
@@ -27,7 +27,7 @@ export default class PomodoroTimer extends React.Component{
     return(
       <div className="pomodoro-timer" style={wrapper}>
         <PomodoroTimerClock time={this.state.time} clockColor={this.props.clockColor}/>
-        <PomodoroTimerControls time={this.state.time} setTime={this._setTime.bind(this)} setAction={this._setAction.bind(this)} action={this.state.action} />
+        <PomodoroTimerControls time={this.state.time} setTime={this._setTime.bind(this)} iteration={this.state.iteration} incrementIteration={this._incrementIteration.bind(this)} />
       </div>
     );
   }
@@ -36,7 +36,7 @@ export default class PomodoroTimer extends React.Component{
     this.setState({time : newTime});
   }
 
-  _setAction(newAction){
-    this.setState({action : newAction});
+  _incrementIteration(){
+    this.setState({iteration : this.state.iteration + 1});
   }
 }

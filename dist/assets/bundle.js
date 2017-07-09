@@ -21318,9 +21318,11 @@ var PomodoroTimerControls = function (_React$Component) {
 
       var buttonStyle = {
         "boxShadow": "5px 0px 5px #888888",
-        "width": "100%",
+        "width": "50%",
         "border": "2px solid"
       };
+
+      var skipButtonStyle = {};
 
       return _react2.default.createElement(
         "div",
@@ -21329,6 +21331,11 @@ var PomodoroTimerControls = function (_React$Component) {
           "button",
           { style: buttonStyle, onClick: this._toggleCountDown.bind(this) },
           _react2.default.createElement("i", { className: this.state.faClass })
+        ),
+        _react2.default.createElement(
+          "button",
+          { style: buttonStyle, onClick: this._skip.bind(this) },
+          _react2.default.createElement("i", { className: "fa fa-fast-forward" })
         )
       );
     }
@@ -21349,15 +21356,7 @@ var PomodoroTimerControls = function (_React$Component) {
             _this2.props.setTime(_this2.props.time - 1);
           } else {
             audio.play();
-            if (_this2.props.action == "working") {
-              _this2.props.setTime(300);
-              _this2._toggleCountDown();
-              _this2.props.setAction("break");
-            } else {
-              _this2.props.setTime(1500);
-              _this2._toggleCountDown();
-              _this2.props.setAction("working");
-            }
+            _this2._skip();
           }
         }, 1000);
         this.setState({
@@ -21369,6 +21368,27 @@ var PomodoroTimerControls = function (_React$Component) {
         this.setState({
           faClass: "fa fa-play"
         });
+      }
+    }
+  }, {
+    key: "_skip",
+    value: function _skip() {
+      this.props.incrementIteration();
+      if (this.props.iteration > 0 && this.props.iteration % 8 == 0) {
+        this.props.setTime(900);
+        if (this._interval) {
+          this._toggleCountDown();
+        }
+      } else if (this.props.iteration == 0 || this.props.iteration % 2 == 0) {
+        this.props.setTime(300);
+        if (this._interval) {
+          this._toggleCountDown();
+        }
+      } else {
+        this.props.setTime(1500);
+        if (this._interval) {
+          this._toggleCountDown();
+        }
       }
     }
 
@@ -21432,7 +21452,7 @@ var PomodoroTimer = function (_React$Component) {
 
     _this.state = {
       time: 1500,
-      action: "working"
+      iteration: 1 // Starts at 1.  Wierd but allows it to work as expceted on first iteration.
     };
     return _this;
   }
@@ -21453,7 +21473,7 @@ var PomodoroTimer = function (_React$Component) {
         'div',
         { className: 'pomodoro-timer', style: wrapper },
         _react2.default.createElement(_pomodoroTimerClock2.default, { time: this.state.time, clockColor: this.props.clockColor }),
-        _react2.default.createElement(_pomodoroTimerControls2.default, { time: this.state.time, setTime: this._setTime.bind(this), setAction: this._setAction.bind(this), action: this.state.action })
+        _react2.default.createElement(_pomodoroTimerControls2.default, { time: this.state.time, setTime: this._setTime.bind(this), iteration: this.state.iteration, incrementIteration: this._incrementIteration.bind(this) })
       );
     }
   }, {
@@ -21462,9 +21482,9 @@ var PomodoroTimer = function (_React$Component) {
       this.setState({ time: newTime });
     }
   }, {
-    key: '_setAction',
-    value: function _setAction(newAction) {
-      this.setState({ action: newAction });
+    key: '_incrementIteration',
+    value: function _incrementIteration() {
+      this.setState({ iteration: this.state.iteration + 1 });
     }
   }]);
 
