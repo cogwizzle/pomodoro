@@ -21223,22 +21223,39 @@ var PomodoroTimerClock = function (_React$Component) {
   _createClass(PomodoroTimerClock, [{
     key: "render",
     value: function render() {
+      var cardStyle = {
+        "border": "2px solid",
+        "boxShadow": "5px 0px 5px #888888",
+        "padding": "40px",
+        "fontSize": "x-large",
+        "display": "inline-block",
+        "backgroundColor": "white"
+      };
+
       return _react2.default.createElement(
         "span",
         { className: "pomodoro-timer-clock" },
         _react2.default.createElement(
-          "h1",
-          null,
-          "Time"
-        ),
-        _react2.default.createElement(
           "div",
           null,
-          Math.floor(this.props.time / 60),
-          " : ",
-          this.props.time % 60
+          _react2.default.createElement(
+            "div",
+            { style: cardStyle },
+            this._timeDisplay(Math.floor(this.props.time / 60)),
+            " : ",
+            this._timeDisplay(this.props.time % 60)
+          )
         )
       );
+    }
+  }, {
+    key: "_timeDisplay",
+    value: function _timeDisplay(time) {
+      if ((time + "").length < 2) {
+        return "0" + time;
+      } else {
+        return time;
+      }
     }
   }]);
 
@@ -21280,7 +21297,7 @@ var PomodoroTimerControls = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (PomodoroTimerControls.__proto__ || Object.getPrototypeOf(PomodoroTimerControls)).call(this));
 
     _this.state = {
-      buttonText: "|>"
+      faClass: "fa fa-play"
     };
 
     _this._interval = false;
@@ -21295,10 +21312,24 @@ var PomodoroTimerControls = function (_React$Component) {
   _createClass(PomodoroTimerControls, [{
     key: "render",
     value: function render() {
+      var wrapper = {
+        "width": "151px"
+      };
+
+      var buttonStyle = {
+        "boxShadow": "5px 0px 5px #888888",
+        "width": "100%",
+        "border": "2px solid"
+      };
+
       return _react2.default.createElement(
-        "button",
-        { onClick: this._toggleCountDown.bind(this) },
-        this.state.buttonText
+        "div",
+        { style: wrapper },
+        _react2.default.createElement(
+          "button",
+          { style: buttonStyle, onClick: this._toggleCountDown.bind(this) },
+          _react2.default.createElement("i", { className: this.state.faClass })
+        )
       );
     }
 
@@ -21316,18 +21347,25 @@ var PomodoroTimerControls = function (_React$Component) {
           if (_this2.props.time > 0) {
             _this2.props.setTime(_this2.props.time - 1);
           } else {
-            _this2.props.setTime(1500);
-            _this2._toggleCountDown();
+            if (_this2.props.action == "working") {
+              _this2.props.setTime(300);
+              _this2._toggleCountDown();
+              _this2.props.setAction("break");
+            } else {
+              _this2.props.setTime(1500);
+              _this2._toggleCountDown();
+              _this2.props.setAction("working");
+            }
           }
         }, 1000);
         this.setState({
-          buttonText: "||"
+          faClass: "fa fa-pause"
         });
       } else {
         clearInterval(this._interval);
         this._interval = false;
         this.setState({
-          buttonText: "|>"
+          faClass: "fa fa-play"
         });
       }
     }
@@ -21391,7 +21429,8 @@ var PomodoroTimer = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (PomodoroTimer.__proto__ || Object.getPrototypeOf(PomodoroTimer)).call(this));
 
     _this.state = {
-      time: 1500
+      time: 60,
+      action: "working"
     };
     return _this;
   }
@@ -21404,17 +21443,26 @@ var PomodoroTimer = function (_React$Component) {
   _createClass(PomodoroTimer, [{
     key: 'render',
     value: function render() {
+      var wrapper = {
+        "width": "151px"
+      };
+
       return _react2.default.createElement(
         'div',
-        { className: 'pomodoro-timer' },
-        _react2.default.createElement(_pomodoroTimerClock2.default, { time: this.state.time }),
-        _react2.default.createElement(_pomodoroTimerControls2.default, { time: this.state.time, setTime: this._setTime.bind(this) })
+        { className: 'pomodoro-timer', style: wrapper },
+        _react2.default.createElement(_pomodoroTimerClock2.default, { time: this.state.time, clockColor: this.props.clockColor }),
+        _react2.default.createElement(_pomodoroTimerControls2.default, { time: this.state.time, setTime: this._setTime.bind(this), setAction: this._setAction.bind(this), action: this.state.action })
       );
     }
   }, {
     key: '_setTime',
     value: function _setTime(newTime) {
       this.setState({ time: newTime });
+    }
+  }, {
+    key: '_setAction',
+    value: function _setAction(newAction) {
+      this.setState({ action: newAction });
     }
   }]);
 

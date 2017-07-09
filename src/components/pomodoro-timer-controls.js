@@ -9,7 +9,7 @@ export default class PomodoroTimerControls extends React.Component{
     super();
 
     this.state = {
-      buttonText : "|>",
+      faClass : "fa fa-play",
     }
 
     this._interval = false;
@@ -19,8 +19,20 @@ export default class PomodoroTimerControls extends React.Component{
    * JSX based render function.
    */
   render(){
+    var wrapper = {
+      "width" : "151px",
+    }
+
+    var buttonStyle = {
+      "boxShadow": "5px 0px 5px #888888",
+      "width" : "100%",
+      "border":"2px solid",
+    }
+
     return (
-      <button onClick={this._toggleCountDown.bind(this)}>{this.state.buttonText}</button>
+      <div style={wrapper}>
+        <button style={buttonStyle} onClick={this._toggleCountDown.bind(this)}><i className={this.state.faClass} /></button>
+      </div>
     );
   }
 
@@ -33,18 +45,25 @@ export default class PomodoroTimerControls extends React.Component{
         if(this.props.time > 0){
           this.props.setTime(this.props.time - 1);
         }else{
-          this.props.setTime(1500);
-          this._toggleCountDown();
+          if(this.props.action == "working"){
+            this.props.setTime(300);
+            this._toggleCountDown();
+            this.props.setAction("break");
+          }else{
+            this.props.setTime(1500);
+            this._toggleCountDown();
+            this.props.setAction("working");
+          }
         }
       }, 1000);
       this.setState({
-        buttonText : "||"
+        faClass : "fa fa-pause"
       });
     }else{
       clearInterval(this._interval);
       this._interval = false;
       this.setState({
-        buttonText : "|>"
+        faClass : "fa fa-play"
       });
     }
   }
