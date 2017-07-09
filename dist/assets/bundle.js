@@ -21342,11 +21342,13 @@ var PomodoroTimerControls = function (_React$Component) {
     value: function _toggleCountDown() {
       var _this2 = this;
 
+      var audio = new Audio("./assets/Roundhouse Kick-SoundBible.com-1663225804.mp3");
       if (!this._interval) {
         this._interval = setInterval(function () {
           if (_this2.props.time > 0) {
             _this2.props.setTime(_this2.props.time - 1);
           } else {
+            audio.play();
             if (_this2.props.action == "working") {
               _this2.props.setTime(300);
               _this2._toggleCountDown();

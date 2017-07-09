@@ -7,7 +7,7 @@ function swallowError(error){
   this.emit('end');
 }
 
-gulp.task("default", ["transpile", "watch"]);
+gulp.task("default", ["transpile", "moveSounds", "watch"]);
 
 gulp.task('transpile', () => {
   return browserify("src/app.js")
@@ -16,6 +16,11 @@ gulp.task('transpile', () => {
     .on('error', swallowError)
     .pipe(source("bundle.js"))
     .pipe(gulp.dest("dist/assets"));
+});
+
+gulp.task('moveSounds', () => {
+  gulp.src('./sounds/Roundhouse Kick-SoundBible.com-1663225804.mp3')
+    .pipe(gulp.dest('./dist/assets/'));
 });
 
 gulp.task('watch', () => {

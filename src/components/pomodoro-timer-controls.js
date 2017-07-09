@@ -40,7 +40,7 @@ export default class PomodoroTimerControls extends React.Component{
    * Toggle on and off count down.
    */
   _toggleCountDown(){
-    var audio = new Audio("../sounds/Roundhouse Kick-SoundBible.com-1663225804.mp3");
+    var audio = new Audio("./assets/Roundhouse Kick-SoundBible.com-1663225804.mp3");
     if(!this._interval){
       this._interval = setInterval(() => {
         if(this.props.time > 0){
