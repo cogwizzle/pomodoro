@@ -1,4 +1,6 @@
 import React from 'react';
+import 'font-awesome/css/font-awesome.min.css';
+import RoundHouse from '../../sounds/Roundhouse Kick-SoundBible.com-1663225804.mp3';
 
 export default class PomodoroTimerControls extends React.Component{
   
@@ -45,7 +47,7 @@ export default class PomodoroTimerControls extends React.Component{
    * Toggle on and off count down.
    */
   _toggleCountDown(){
-    var audio = new Audio("./assets/Roundhouse Kick-SoundBible.com-1663225804.mp3");
+    var audio = new Audio(RoundHouse);
     if(!this._interval){
       this._interval = setInterval(() => {
         if(this.props.time > 0){
