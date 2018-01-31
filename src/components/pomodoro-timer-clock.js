@@ -14,12 +14,9 @@ export default class PomodoroTimerClock extends React.Component{
    */
   render(){
     var cardStyle = {
-      "border":"2px solid",
-      "boxShadow": "5px 0px 5px #888888",
       "padding" : "40px",
       "fontSize" : "x-large",
       "display" : "inline-block",
-      "backgroundColor" : "white",
     }
 
     return (

@@ -1,6 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import 'font-awesome/css/font-awesome.min.css';
-import RoundHouse from '../../sounds/Roundhouse Kick-SoundBible.com-1663225804.mp3';
 
 export default class PomodoroTimerControls extends React.Component{
   
@@ -9,35 +9,43 @@ export default class PomodoroTimerControls extends React.Component{
    */
   constructor(){
     super();
+  }
 
-    this.state = {
-      faClass : "fa fa-play",
-    }
+  /**
+   * After component mounts.
+   */
+  componentDidMount() {
+    const {store} = this.context;
+    this.unsubscribe = store.subscribe(() => {
+      this.forceUpdate();
+    });
+  }
 
-    this._interval = false;
+  /**
+   * Before react is removed from DOM.
+   */
+  componentWillUnmount() {
+    this.unsubscribe()
   }
 
   /**
    * JSX based render function.
    */
   render(){
-    var wrapper = {
+    const { store } = this.context;
+    let wrapper = {
       "width" : "151px",
     }
 
-    var buttonStyle = {
+    let buttonStyle = {
       "boxShadow": "5px 0px 5px #888888",
       "width" : "50%",
       "border":"2px solid",
     }
 
-    var skipButtonStyle = {
-
-    }
-
     return (
       <div style={wrapper}>
-        <button style={buttonStyle} onClick={this._toggleCountDown.bind(this)}><i className={this.state.faClass} /></button>
+        <button style={buttonStyle} onClick={this._toggleCountDown.bind(this)}><i className={(store.getState().isTicking) ? 'fa fa-pause' : 'fa fa-play'} /></button>
         <button style={buttonStyle} onClick={this._skip.bind(this)}><i className="fa fa-fast-forward" /></button>
       </div>
     );
@@ -47,54 +55,30 @@ export default class PomodoroTimerControls extends React.Component{
    * Toggle on and off count down.
    */
   _toggleCountDown(){
-    var audio = new Audio(RoundHouse);
-    if(!this._interval){
-      this._interval = setInterval(() => {
-        if(this.props.time > 0){
-          this.props.setTime(this.props.time - 1);
-        }else{
-          audio.play();
-          this._skip();
-        }
-      }, 1000);
-      this.setState({
-        faClass : "fa fa-pause"
-      });
-    }else{
-      clearInterval(this._interval);
-      this._interval = false;
-      this.setState({
-        faClass : "fa fa-play"
-      });
-    }
+    const { store } = this.context;
+
+    store.dispatch({
+      type: 'TOGGLE_TIMER'
+    });
   }
 
-  _skip(){
-    if(this.props.iteration > 0 && this.props.iteration % 8 == 0){
-      this.props.setTime(900);
-      if(this._interval){
-        this._toggleCountDown();
-      }
-    }else if(this.props.iteration == 0 || (this.props.iteration % 2 == 0)){
-      this.props.setTime(300);
-      if(this._interval){
-        this._toggleCountDown();
-      }
-    }else{
-      this.props.setTime(1500);
-      if(this._interval){
-        this._toggleCountDown();
-      }
-    }
-    this.props.incrementIteration();
-  }
+  _skip() {
+    const { store } = this.context;
+    const { isWorking, isTicking, workTime, restTime } = store.getState();
 
-  /**
-   * Before component unmounts.
-   */
-  componentWillUnmount(){
-    if(this._interval){
-      clearInterval(this._interval);
+    if (isTicking) {
+      store.dispatch({
+        type: 'TOGGLE_TIMER'
+      });
     }
+
+    store.dispatch({
+      type: 'SET_TIMER',
+      time: (isWorking) ? restTime : workTime,
+      isWorking: isWorking
+    });
   }
 }
+PomodoroTimerControls.contextTypes = {
+  store: PropTypes.object
+};

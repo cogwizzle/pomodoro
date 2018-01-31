@@ -1,6 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import PomodoroTimerClock from './pomodoro-timer-clock';
 import PomodoroTimerControls from './pomodoro-timer-controls';
+import RoundHouse from '../../sounds/Roundhouse Kick-SoundBible.com-1663225804.mp3';
 
 export default class PomodoroTimer extends React.Component{
   
@@ -9,34 +11,94 @@ export default class PomodoroTimer extends React.Component{
    */
   constructor(){
     super();
+  }
 
-    this.state = {
-      time : 1500,
-      iteration : 2,
+  /**
+   * After component mounts.
+   */
+  componentDidMount() {
+    const { store } = this.context;
+    this.unsubscribe = store.subscribe(() => {
+      this.forceUpdate();
+
+      let isTicking = store.getState().isTicking;
+      if (isTicking) {
+        this._tick(store);
+      }
+    });
+  }
+
+  _tick(store) {
+    let { time, isWorking, isTicking, cyclesComplete, workTime, restTime, extRestTime, restIncrement } = store.getState();
+    if (time > 0) {
+
+      setTimeout(() => {
+        if (store.getState().isTicking) {
+          store.dispatch({
+            type: 'TICK_TIMER'
+          });
+        }
+      }, 1000);
+    } else {
+
+      let time = 0;
+
+      let audio = new Audio(RoundHouse);
+      audio.play();
+      store.dispatch({
+        type: 'TOGGLE_TIMER',
+      });
+
+      if (store.getState().isWorking) {
+
+        store.dispatch({
+          type: 'CYCLE_COMPLETE_TIMER',
+        });
+
+
+        if (store.getState().cyclesComplete > 0 && store.getState().cyclesComplete % restIncrement == 0) {
+
+          time = extRestTime;
+        } else {
+
+          time = restTime;
+        }
+      } else {
+
+        time = workTime;
+      }
+
+      store.dispatch({
+        type: 'SET_TIMER',
+        time: time
+      });
     }
+  }
+
+  /**
+   * Before react is removed from DOM.
+   */
+  componentWillUnmount() {
+    this.unsubscribe()
   }
 
   /**
    * JSX based render function.
    */
   render(){
-    var wrapper = {
+    let wrapper = {
       "width" : "151px",
     }
+    const { store } = this.context;
 
     return(
       <div className="pomodoro-timer" style={wrapper}>
-        <PomodoroTimerClock time={this.state.time} clockColor={this.props.clockColor}/>
-        <PomodoroTimerControls time={this.state.time} setTime={this._setTime.bind(this)} iteration={this.state.iteration} incrementIteration={this._incrementIteration.bind(this)} />
+        <PomodoroTimerClock time={store.getState().time} />
+        <PomodoroTimerControls />
       </div>
     );
   }
-
-  _setTime(newTime){
-    this.setState({time : newTime});
-  }
-
-  _incrementIteration(){
-    this.setState({iteration : this.state.iteration + 1});
-  }
 }
+PomodoroTimer.contextTypes = {
+  store: PropTypes.object
+};
