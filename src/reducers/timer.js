@@ -38,12 +38,12 @@ function Timer(
       return {...state, ...{cyclesComplete: completed}};
     case 'RESET_TIMER':
 
-      return {
+      return {...state, ...{
         time: 1500,
-        isWorking: false,
+        isWorking: true,
         isTicking: false,
         cyclesComplete: 0
-      };
+      }};
     default:
 
       return state;
