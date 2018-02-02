@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import PomodoroTimerClock from './pomodoro-timer-clock';
+import ClockDisplay from './clock_display';
 import PomodoroTimerControls from './pomodoro-timer-controls';
 import RoundHouse from '../../sounds/Roundhouse Kick-SoundBible.com-1663225804.mp3';
 
@@ -11,6 +11,7 @@ export default class PomodoroTimer extends React.Component{
    */
   constructor(){
     super();
+    this.timeExpireSound = new Audio(RoundHouse);
   }
 
   /**
@@ -43,8 +44,7 @@ export default class PomodoroTimer extends React.Component{
 
       let time = 0;
 
-      let audio = new Audio(RoundHouse);
-      audio.play();
+      this.timeExpireSound.play();
       store.dispatch({
         type: 'TOGGLE_TIMER',
       });
@@ -93,7 +93,7 @@ export default class PomodoroTimer extends React.Component{
 
     return(
       <div className="pomodoro-timer" style={wrapper}>
-        <PomodoroTimerClock time={store.getState().time} />
+        <ClockDisplay time={store.getState().time} />
         <PomodoroTimerControls />
       </div>
     );
