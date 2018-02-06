@@ -1,3 +1,5 @@
+import RoundHouse from '../../sounds/Roundhouse Kick-SoundBible.com-1663225804.mp3';
+
 /**
  * Timer reducer for keeping track of time application state.
  */
@@ -10,7 +12,8 @@ function Timer(
     time: 1500,
     isWorking: true,
     isTicking: false,
-    cyclesComplete: 0 
+    cyclesComplete: 0,
+    alert: RoundHouse
   },
   action) {
   switch(action.type) {
@@ -22,10 +25,37 @@ function Timer(
         cyclesComplete: (action.cycle) ? cycles : state.cyclesComplete
       }};
     case 'TICK_TIMER':
+     
+      let nextState = {...state};
 
-      let nextTime = state.time - 1;
+      if (nextState.time > 0 && nextState.isTicking) {
 
-      return {...state, ...{time: nextTime}};
+        nextState.time = --nextState.time;
+      } else if (nextState.time === 0) {
+  
+        if (state.alert)
+          state.alert.play();
+
+        nextState.isTicking = false;
+        
+        if (nextState.isWorking) {
+
+          nextState.cyclesComplete = ++cyclesComplete;
+          
+          if (nextState.cyclesComplete > 0 && nextState.cyclesComplete % nextState.restIncrement === 0) {
+
+            nextState.time = nextState.extRestTime;
+          } else {
+
+            nextState.time = nextState.restTime;
+          }
+        } else {
+
+          nextState.time = nextState.workTime;
+        }
+      }
+
+      return nextState;
     case 'SET_TIMER':
 
       return {...state, ...{

@@ -1,12 +1,15 @@
 import React from 'react';
 
+/**
+ * Component used for displaying time.
+ */
 export default class ClockDisplay extends React.Component{
   
   /**
    * Default constructor.
    */
-  constructor(){
-    super();
+  constructor(props){
+    super(props);
   }
 
   /**

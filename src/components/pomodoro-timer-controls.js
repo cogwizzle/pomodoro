@@ -7,8 +7,8 @@ export default class PomodoroTimerControls extends React.Component{
   /**
    * Default constructor.
    */
-  constructor(){
-    super();
+  constructor(props){
+    super(props);
   }
 
   /**
