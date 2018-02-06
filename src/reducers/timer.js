@@ -33,14 +33,15 @@ function Timer(
         nextState.time = --nextState.time;
       } else if (nextState.time === 0) {
   
-        if (state.alert)
-          state.alert.play();
+        if (state.alert){
+            new Audio(state.alert).play();
+        }
 
         nextState.isTicking = false;
         
         if (nextState.isWorking) {
 
-          nextState.cyclesComplete = ++cyclesComplete;
+          nextState.cyclesComplete = ++nextState.cyclesComplete;
           
           if (nextState.cyclesComplete > 0 && nextState.cyclesComplete % nextState.restIncrement === 0) {
 
@@ -53,6 +54,8 @@ function Timer(
 
           nextState.time = nextState.workTime;
         }
+
+        nextState.isWorking = !nextState.isWorking;
       }
 
       return nextState;
