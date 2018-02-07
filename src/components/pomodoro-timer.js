@@ -1,5 +1,6 @@
 import Timer from './timer';
 import { connect } from 'react-redux';
+import { tickClock } from '../creators/timer_creators';
 
 let timeoutAnchor;
 
@@ -21,9 +22,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
   return {
     tick: () => {
-      dispatch({
-        type: 'TICK_TIMER'
-      });
+      dispatch(tickClock());
     }
   };
 }

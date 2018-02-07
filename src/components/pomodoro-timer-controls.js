@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import 'font-awesome/css/font-awesome.min.css';
+import { toggleClock, setTime } from '../creators/timer_creators';
 
 export default class PomodoroTimerControls extends React.Component{
   
@@ -57,9 +58,7 @@ export default class PomodoroTimerControls extends React.Component{
   _toggleCountDown(){
     const { store } = this.context;
 
-    store.dispatch({
-      type: 'TOGGLE_TIMER'
-    });
+    store.dispatch(toggleClock());
   }
 
   _skip() {
@@ -67,16 +66,10 @@ export default class PomodoroTimerControls extends React.Component{
     const { isWorking, isTicking, workTime, restTime } = store.getState();
 
     if (isTicking) {
-      store.dispatch({
-        type: 'TOGGLE_TIMER'
-      });
+      store.dispatch(toggleClock());
     }
 
-    store.dispatch({
-      type: 'SET_TIMER',
-      time: (isWorking) ? restTime : workTime,
-      isWorking: isWorking
-    });
+    store.dispatch(setTime(((isWorking) ? restTime : workTime), isWorking));
   }
 }
 PomodoroTimerControls.contextTypes = {

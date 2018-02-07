@@ -6,11 +6,11 @@ const customCreateStore = () => {
   return createStore(
     timer,
     {
-      workTime: 1500,
-      restTime: 300,
-      extRestTime: 900,
+      workTime: 10,
+      restTime: 3,
+      extRestTime: 9,
       restIncrement: 4,
-      time: 1500,
+      time: 10,
       isWorking: true,
       isTicking: false,
       cyclesComplete: 0,

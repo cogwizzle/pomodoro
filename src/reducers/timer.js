@@ -63,18 +63,6 @@ function Timer(
         time: action.time,
         isWorking: (action.hasOwnProperty('working')) ? action.working : !state.isWorking
       }};
-    case 'CYCLE_COMPLETE_TIMER':
-      let completed = state.cyclesComplete + 1;
-      
-      return {...state, ...{cyclesComplete: completed}};
-    case 'RESET_TIMER':
-
-      return {...state, ...{
-        time: 1500,
-        isWorking: true,
-        isTicking: false,
-        cyclesComplete: 0
-      }};
     default:
 
       return state;

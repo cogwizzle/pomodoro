@@ -1,5 +1,6 @@
 import reducer from '../timer';
 import { createStore } from 'redux';
+import { tickClock, toggleClock, setTime } from '../../creators/timer_creators';
 
 it('Timer shall return the default state when passed no state and a non valid option.', () => {
   let store = createStore(reducer);
@@ -26,9 +27,7 @@ it('Timer shall return the default state when passed no state and a non valid op
 it('Timer shall toggle the timer when passed the action TOGGLE_TIMER', () => {
   let store = createStore(reducer);
 
-  store.dispatch({
-    type: 'TOGGLE_TIMER'
-  });
+  store.dispatch(toggleClock());
 
   const isTicking = store.getState().isTicking;
   const expected = true;
@@ -50,12 +49,9 @@ it('Timer shall decrement the amount of time by one when passed the action TICK_
     }
   );
 
-  store.dispatch({
-    type: 'TICK_TIMER'
-  });
+  store.dispatch(tickClock());
   
   const state = store.getState();
-  console.log('state: ', state);
   const expected = {
       restTime: 300,
       extRestTime: 900,
@@ -72,45 +68,9 @@ it('Timer shall decrement the amount of time by one when passed the action TICK_
 it('Timer shall set the time value when passed the action SET_TIMER', () => {
   let store = createStore(reducer);
 
-  store.dispatch({
-    type: 'SET_TIMER',
-    time: 2000
-  });
+  store.dispatch(setTime(2000));
 
   const time = store.getState().time;
   const expected = 2000;
   expect(time).toEqual(expected);
-});
-
-it('Timer shall increment the cycles complete when passed the CYCLE_COMPLETE_TIMER action.', () => {
-  let store = createStore(reducer);
-
-  store.dispatch({
-    type: 'CYCLE_COMPLETE_TIMER'
-  });
-
-  const cycles = store.getState().cyclesComplete;
-  const expected = 1;
-  expect(cycles).toEqual(expected);
-});
-
-it('Timer shall reset tot he default values when RESET_TIMER action is passed.', () => {
-  let store = createStore(reducer);
-
-  store.dispatch({
-    type: 'RESET_TIMER'
-  });
-
-  const state = store.getState();
-  const expected = {
-    workTime: 1500,
-    restTime: 300,
-    extRestTime: 900,
-    restIncrement: 4,
-    time: 1500,
-    isWorking: true,
-    isTicking: false,
-    cyclesComplete: 0 
-  };
-  expect(state).toEqual(expected);
 });
