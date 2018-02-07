@@ -36,15 +36,37 @@ it('Timer shall toggle the timer when passed the action TOGGLE_TIMER', () => {
 });
 
 it('Timer shall decrement the amount of time by one when passed the action TICK_TIMER.', () => {
-  let store = createStore(reducer);
+  let store = createStore(
+    reducer,
+    {
+      restTime: 300,
+      extRestTime: 900,
+      restIncrement: 4,
+      time: 1500,
+      isWorking: true,
+      isTicking: true,
+      cyclesComplete: 0,
+      alert: undefined
+    }
+  );
 
   store.dispatch({
     type: 'TICK_TIMER'
   });
   
-  const time = store.getState().time;
-  const expected = 1499;
-  expect(time).toEqual(expected);
+  const state = store.getState();
+  console.log('state: ', state);
+  const expected = {
+      restTime: 300,
+      extRestTime: 900,
+      restIncrement: 4,
+      time: 1499,
+      isWorking: true,
+      isTicking: true,
+      cyclesComplete: 0,
+      alert: undefined
+  };
+  expect(state).toEqual(expected);
 });
 
 it('Timer shall set the time value when passed the action SET_TIMER', () => {

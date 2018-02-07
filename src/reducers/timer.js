@@ -1,5 +1,3 @@
-import RoundHouse from '../../sounds/Roundhouse Kick-SoundBible.com-1663225804.mp3';
-
 /**
  * Timer reducer for keeping track of time application state.
  */
@@ -13,7 +11,7 @@ function Timer(
     isWorking: true,
     isTicking: false,
     cyclesComplete: 0,
-    alert: RoundHouse
+    alert: undefined
   },
   action) {
   switch(action.type) {
