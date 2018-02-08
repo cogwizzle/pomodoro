@@ -26,28 +26,9 @@ export default class TimerControls extends React.Component{
 
     return (
       <div style={wrapper}>
-        <button style={buttonStyle} onClick={this._toggleCountDown.bind(this)}><i className={(this.props.isTicking) ? 'fa fa-pause' : 'fa fa-play'} /></button>
-        <button style={buttonStyle} onClick={this._skip.bind(this)}><i className="fa fa-fast-forward" /></button>
+        <button style={buttonStyle} onClick={this.props.toggle}><i className={(this.props.isTicking) ? 'fa fa-pause' : 'fa fa-play'} /></button>
+        <button style={buttonStyle} onClick={this.props.skip}><i className="fa fa-fast-forward" /></button>
       </div>
     );
-  }
-
-  /**
-   * Toggle on and off count down.
-   */
-  _toggleCountDown(){
-
-    this.props.toggle();
-  }
-
-  _skip() {
-    const { isWorking, isTicking, workTime, restTime } = this.props;
-
-    if (isTicking) {
-
-      this.props.toggle();
-    }
-
-    this.props.setTime(((isWorking) ? restTime : workTime), isWorking);
   }
 }

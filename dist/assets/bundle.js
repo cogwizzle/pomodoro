@@ -23930,6 +23930,8 @@ exports.default = ClockDisplay;
 "use strict";
 
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _timer_controls = __webpack_require__(207);
 
 var _timer_controls2 = _interopRequireDefault(_timer_controls);
@@ -23951,7 +23953,7 @@ var mapStateToProps = function mapStateToProps(state) {
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
-    toggle: function toggle() {
+    toggleClock: function toggleClock() {
       dispatch((0, _timer_creators.toggleClock)());
     },
     setTime: function setTime(time, isWorking) {
@@ -23960,7 +23962,30 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   };
 };
 
-module.exports = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_timer_controls2.default);
+var mergeProps = function mergeProps(stateProps, dispatchProps, ownProps) {
+  return _extends({}, stateProps, dispatchProps, {
+    skip: function skip() {
+      var isWorking = stateProps.isWorking,
+          isTicking = stateProps.isTicking,
+          workTime = stateProps.workTime,
+          restTime = stateProps.restTime;
+
+
+      if (isTicking) {
+
+        dispatchProps.toggleClock();
+      }
+
+      dispatchProps.setTime(isWorking ? restTime : workTime, isWorking);
+    },
+    toggle: function toggle() {
+
+      dispatchProps.toggleClock();
+    }
+  });
+};
+
+module.exports = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps, mergeProps)(_timer_controls2.default);
 
 /***/ }),
 /* 207 */
@@ -24024,43 +24049,15 @@ var TimerControls = function (_React$Component) {
         { style: wrapper },
         _react2.default.createElement(
           'button',
-          { style: buttonStyle, onClick: this._toggleCountDown.bind(this) },
+          { style: buttonStyle, onClick: this.props.toggle },
           _react2.default.createElement('i', { className: this.props.isTicking ? 'fa fa-pause' : 'fa fa-play' })
         ),
         _react2.default.createElement(
           'button',
-          { style: buttonStyle, onClick: this._skip.bind(this) },
+          { style: buttonStyle, onClick: this.props.skip },
           _react2.default.createElement('i', { className: 'fa fa-fast-forward' })
         )
       );
-    }
-
-    /**
-     * Toggle on and off count down.
-     */
-
-  }, {
-    key: '_toggleCountDown',
-    value: function _toggleCountDown() {
-
-      this.props.toggle();
-    }
-  }, {
-    key: '_skip',
-    value: function _skip() {
-      var _props = this.props,
-          isWorking = _props.isWorking,
-          isTicking = _props.isTicking,
-          workTime = _props.workTime,
-          restTime = _props.restTime;
-
-
-      if (isTicking) {
-
-        this.props.toggle();
-      }
-
-      this.props.setTime(isWorking ? restTime : workTime, isWorking);
     }
   }]);
 
