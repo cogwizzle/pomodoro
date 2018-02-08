@@ -30,5 +30,4 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
   }}
 });
 
-let PomodoroTimer = connect(mapStateToProps, mapDispatchToProps, mergeProps)(Timer);
-export default PomodoroTimer;
+module.exports = connect(mapStateToProps, mapDispatchToProps, mergeProps)(Timer);

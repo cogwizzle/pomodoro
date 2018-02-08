@@ -23629,10 +23629,6 @@ module.exports = ReactDOMInvalidARIAHook;
 "use strict";
 
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _timer = __webpack_require__(203);
@@ -23673,8 +23669,7 @@ var mergeProps = function mergeProps(stateProps, dispatchProps, ownProps) {
     } });
 };
 
-var PomodoroTimer = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps, mergeProps)(_timer2.default);
-exports.default = PomodoroTimer;
+module.exports = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps, mergeProps)(_timer2.default);
 
 /***/ }),
 /* 203 */
