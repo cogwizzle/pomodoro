@@ -1,77 +1,43 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import 'font-awesome/css/font-awesome.min.css';
+import TimerControls from './timer_controls';
+import { connect } from 'react-redux';
 import { toggleClock, setTime } from '../creators/timer_creators';
 
-export default class PomodoroTimerControls extends React.Component{
-  
-  /**
-   * Default constructor.
-   */
-  constructor(props){
-    super(props);
-  }
+const mapStateToProps = state => ({
+  isWorking: state.isWorking,
+  isTicking: state.isTicking,
+  workTime: state.workTime,
+  restTime: state.restTime
+});
 
-  /**
-   * After component mounts.
-   */
-  componentDidMount() {
-    const {store} = this.context;
-    this.unsubscribe = store.subscribe(() => {
-      this.forceUpdate();
-    });
+const mapDispatchToProps = dispatch => ({
+  toggleClock: () => {
+    dispatch(toggleClock());
+  },
+  setTime: (time, isWorking) => {
+    dispatch(setTime(time, isWorking));
   }
+});
 
-  /**
-   * Before react is removed from DOM.
-   */
-  componentWillUnmount() {
-    this.unsubscribe()
-  }
+const mergeProps = (stateProps, dispatchProps, ownProps) => ({
+  ...stateProps,
+  ...dispatchProps,
+  ...{
+    skip: () => {
+   
+      const { isWorking, isTicking, workTime, restTime } = stateProps;
 
-  /**
-   * JSX based render function.
-   */
-  render(){
-    const { store } = this.context;
-    let wrapper = {
-      "width" : "151px",
+      if (isTicking) {
+
+        dispatchProps.toggleClock();
+      }
+
+      dispatchProps.setTime(((isWorking) ? restTime : workTime), isWorking);
+    },
+    toggle: () => {
+    
+      dispatchProps.toggleClock();
     }
-
-    let buttonStyle = {
-      "boxShadow": "5px 0px 5px #888888",
-      "width" : "50%",
-      "border":"2px solid",
-    }
-
-    return (
-      <div style={wrapper}>
-        <button style={buttonStyle} onClick={this._toggleCountDown.bind(this)}><i className={(store.getState().isTicking) ? 'fa fa-pause' : 'fa fa-play'} /></button>
-        <button style={buttonStyle} onClick={this._skip.bind(this)}><i className="fa fa-fast-forward" /></button>
-      </div>
-    );
   }
+});
 
-  /**
-   * Toggle on and off count down.
-   */
-  _toggleCountDown(){
-    const { store } = this.context;
-
-    store.dispatch(toggleClock());
-  }
-
-  _skip() {
-    const { store } = this.context;
-    const { isWorking, isTicking, workTime, restTime } = store.getState();
-
-    if (isTicking) {
-      store.dispatch(toggleClock());
-    }
-
-    store.dispatch(setTime(((isWorking) ? restTime : workTime), isWorking));
-  }
-}
-PomodoroTimerControls.contextTypes = {
-  store: PropTypes.object
-};
+module.exports = connect(mapStateToProps, mapDispatchToProps, mergeProps)(TimerControls);
