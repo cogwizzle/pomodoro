@@ -2,8 +2,6 @@ import Timer from './timer';
 import { connect } from 'react-redux';
 import { tickClock } from '../creators/timer_creators';
 
-let timeoutAnchor;
-
 const mapStateToProps = (state) => ({
     isTicking: state.isTicking,
     time: state.time,
