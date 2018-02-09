@@ -23708,6 +23708,12 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+/**
+ * React component for rendering a timer component.
+ * Requires:
+ *  tick property that designates how the clock should tick/interval.
+ *  time property taht designates the current clock time.
+ */
 var Timer = function (_React$Component) {
   _inherits(Timer, _React$Component);
 
@@ -23868,6 +23874,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * Component used for displaying time.
+ * Requires:
+ *  time property that designates the current time to be displayed.
  */
 var ClockDisplay = function (_React$Component) {
   _inherits(ClockDisplay, _React$Component);
@@ -23994,12 +24002,6 @@ module.exports = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps, m
 "use strict";
 
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 var _react = __webpack_require__(16);
 
 var _react2 = _interopRequireDefault(_react);
@@ -24008,63 +24010,50 @@ __webpack_require__(208);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var TimerControls = function (_React$Component) {
-  _inherits(TimerControls, _React$Component);
+/**
+ * Wrapper style for wrapper div.
+ */
+var wrapper = {
+  "width": "151px"
 
   /**
-   * Default constructor.
+   * Style for buttons.
    */
-  function TimerControls(props) {
-    _classCallCheck(this, TimerControls);
-
-    return _possibleConstructorReturn(this, (TimerControls.__proto__ || Object.getPrototypeOf(TimerControls)).call(this, props));
-  }
+};var buttonStyle = {
+  "width": "50%",
+  "border": "2px solid"
 
   /**
-   * JSX based render function.
+   * React component for rendering controls for timer.
+   * Requires:
+   *   isTicking propety to designate if the timer is ticking.
+   *   toggle property for the first button.
+   *   skip property for the second button.
+   *
+   * @param map {object} Map of properties for React component.
+   * return {Component} Timer controls component.
    */
+};var TimerControls = function TimerControls(_ref) {
+  var toggle = _ref.toggle,
+      skip = _ref.skip,
+      isTicking = _ref.isTicking;
+  return _react2.default.createElement(
+    'div',
+    { className: 'timer_controls', style: wrapper },
+    _react2.default.createElement(
+      'button',
+      { style: buttonStyle, onClick: toggle },
+      _react2.default.createElement('i', { className: isTicking ? 'fa fa-pause' : 'fa fa-play' })
+    ),
+    _react2.default.createElement(
+      'button',
+      { style: buttonStyle, onClick: skip },
+      _react2.default.createElement('i', { className: 'fa fa-fast-forward' })
+    )
+  );
+};
 
-
-  _createClass(TimerControls, [{
-    key: 'render',
-    value: function render() {
-      var wrapper = {
-        "width": "151px"
-      };
-
-      var buttonStyle = {
-        "boxShadow": "5px 0px 5px #888888",
-        "width": "50%",
-        "border": "2px solid"
-      };
-
-      return _react2.default.createElement(
-        'div',
-        { style: wrapper },
-        _react2.default.createElement(
-          'button',
-          { style: buttonStyle, onClick: this.props.toggle },
-          _react2.default.createElement('i', { className: this.props.isTicking ? 'fa fa-pause' : 'fa fa-play' })
-        ),
-        _react2.default.createElement(
-          'button',
-          { style: buttonStyle, onClick: this.props.skip },
-          _react2.default.createElement('i', { className: 'fa fa-fast-forward' })
-        )
-      );
-    }
-  }]);
-
-  return TimerControls;
-}(_react2.default.Component);
-
-exports.default = TimerControls;
+module.exports = TimerControls;
 
 /***/ }),
 /* 208 */

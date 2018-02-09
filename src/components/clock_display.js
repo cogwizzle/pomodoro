@@ -2,6 +2,8 @@ import React from 'react';
 
 /**
  * Component used for displaying time.
+ * Requires:
+ *  time property that designates the current time to be displayed.
  */
 export default class ClockDisplay extends React.Component{
   
