@@ -11512,13 +11512,15 @@ var _throttle = __webpack_require__(251);
 
 var _throttle2 = _interopRequireDefault(_throttle);
 
+var _local_storage = __webpack_require__(261);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var store = (0, _create_store2.default)();
 
 store.subscribe((0, _throttle2.default)(function () {
 
-  localStorage.setItem('pomodoro', JSON.stringify(store.getState()));
+  (0, _local_storage.saveState)(store.getState());
 }, 1000));
 
 _reactDom2.default.render(_react2.default.createElement(
@@ -26030,28 +26032,14 @@ var _timer = __webpack_require__(246);
 
 var _timer2 = _interopRequireDefault(_timer);
 
-var _RoundhouseKickSoundBibleCom = __webpack_require__(247);
-
-var _RoundhouseKickSoundBibleCom2 = _interopRequireDefault(_RoundhouseKickSoundBibleCom);
-
 var _redux = __webpack_require__(92);
+
+var _local_storage = __webpack_require__(261);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var storeState = JSON.parse(localStorage.getItem('pomodoro')) || {
-  workTime: 1500,
-  restTime: 300,
-  extRestTime: 900,
-  restIncrement: 4,
-  time: 1500,
-  isWorking: true,
-  isTicking: false,
-  cyclesComplete: 0,
-  alert: _RoundhouseKickSoundBibleCom2.default
-};
-
 var customCreateStore = function customCreateStore() {
-  return (0, _redux.createStore)(_timer2.default, storeState, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+  return (0, _redux.createStore)(_timer2.default, (0, _local_storage.loadState)(), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 };
 
 module.exports = customCreateStore;
@@ -26773,6 +26761,45 @@ function isObjectLike(value) {
 
 module.exports = isObjectLike;
 
+
+/***/ }),
+/* 261 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _RoundhouseKickSoundBibleCom = __webpack_require__(247);
+
+var _RoundhouseKickSoundBibleCom2 = _interopRequireDefault(_RoundhouseKickSoundBibleCom);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/**
+ * Persiste the application state.
+ */
+var saveState = function saveState(state) {
+  localStorage.setItem('pomodoro', JSON.stringify(state));
+};
+
+/**
+ * Load the application state.
+ */
+var loadState = function loadState() {
+  return JSON.parse(localStorage.getItem('pomodoro')) || {
+    workTime: 1500,
+    restTime: 300,
+    extRestTime: 900,
+    restIncrement: 4,
+    time: 1500,
+    isWorking: true,
+    isTicking: false,
+    cyclesComplete: 0,
+    alert: _RoundhouseKickSoundBibleCom2.default
+  };
+};
+
+module.exports = { saveState: saveState, loadState: loadState };
 
 /***/ })
 /******/ ]);
