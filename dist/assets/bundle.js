@@ -23743,8 +23743,6 @@ module.exports = ReactDOMInvalidARIAHook;
 "use strict";
 
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 var _timer = __webpack_require__(207);
 
 var _timer2 = _interopRequireDefault(_timer);
@@ -23777,10 +23775,13 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
 };
 
 var mergeProps = function mergeProps(stateProps, dispatchProps, ownProps) {
-  return _extends({}, stateProps, dispatchProps, { tick: function tick() {
+  return {
+    tick: function tick() {
 
       if (stateProps.isTicking) dispatchProps.dispatchTick();
-    } });
+    },
+    time: stateProps.time
+  };
 };
 
 module.exports = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps, mergeProps)(_timer2.default);
@@ -23826,7 +23827,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * React component for rendering a timer component.
  * Requires:
  *  tick property that designates how the clock should tick/interval.
- *  time property taht designates the current clock time.
+ *  time property that designates the current clock time.
  */
 var Timer = function (_React$Component) {
   _inherits(Timer, _React$Component);
@@ -24052,8 +24053,6 @@ exports.default = ClockDisplay;
 "use strict";
 
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 var _timer_controls = __webpack_require__(211);
 
 var _timer_controls2 = _interopRequireDefault(_timer_controls);
@@ -24075,7 +24074,7 @@ var mapStateToProps = function mapStateToProps(state) {
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
-    toggleClock: function toggleClock() {
+    toggle: function toggle() {
       dispatch((0, _timer_creators.toggleClock)());
     },
     setTime: function setTime(time, isWorking) {
@@ -24085,7 +24084,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 };
 
 var mergeProps = function mergeProps(stateProps, dispatchProps, ownProps) {
-  return _extends({}, stateProps, dispatchProps, {
+  return {
     skip: function skip() {
       var isWorking = stateProps.isWorking,
           isTicking = stateProps.isTicking,
@@ -24100,11 +24099,9 @@ var mergeProps = function mergeProps(stateProps, dispatchProps, ownProps) {
 
       dispatchProps.setTime(isWorking ? restTime : workTime, isWorking);
     },
-    toggle: function toggle() {
-
-      dispatchProps.toggleClock();
-    }
-  });
+    toggle: dispatchProps.toggle,
+    isTicking: stateProps.isTicking
+  };
 };
 
 module.exports = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps, mergeProps)(_timer_controls2.default);

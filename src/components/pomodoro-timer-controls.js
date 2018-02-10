@@ -10,7 +10,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  toggleClock: () => {
+  toggle: () => {
     dispatch(toggleClock());
   },
   setTime: (time, isWorking) => {
@@ -19,25 +19,19 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => ({
-  ...stateProps,
-  ...dispatchProps,
-  ...{
-    skip: () => {
-   
-      const { isWorking, isTicking, workTime, restTime } = stateProps;
+  skip: () => {
+ 
+    const { isWorking, isTicking, workTime, restTime } = stateProps;
 
-      if (isTicking) {
+    if (isTicking) {
 
-        dispatchProps.toggleClock();
-      }
-
-      dispatchProps.setTime(((isWorking) ? restTime : workTime), isWorking);
-    },
-    toggle: () => {
-    
       dispatchProps.toggleClock();
     }
-  }
+
+    dispatchProps.setTime(((isWorking) ? restTime : workTime), isWorking);
+  },
+  toggle: dispatchProps.toggle,
+  isTicking: stateProps.isTicking
 });
 
 module.exports = connect(mapStateToProps, mapDispatchToProps, mergeProps)(TimerControls);

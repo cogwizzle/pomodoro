@@ -21,13 +21,13 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => ({
-  ...stateProps,
-  ...dispatchProps,
-  ...{tick: () => {
+  tick: () => {
 
     if (stateProps.isTicking)
       dispatchProps.dispatchTick();
-  }}
-});
+  },
+  time: stateProps.time
+}
+);
 
 module.exports = connect(mapStateToProps, mapDispatchToProps, mergeProps)(Timer);
