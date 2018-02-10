@@ -25,7 +25,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
 
     if (isTicking) {
 
-      dispatchProps.toggleClock();
+      dispatchProps.toggle();
     }
 
     dispatchProps.setTime(((isWorking) ? restTime : workTime), isWorking);

@@ -24094,7 +24094,7 @@ var mergeProps = function mergeProps(stateProps, dispatchProps, ownProps) {
 
       if (isTicking) {
 
-        dispatchProps.toggleClock();
+        dispatchProps.toggle();
       }
 
       dispatchProps.setTime(isWorking ? restTime : workTime, isWorking);
