@@ -18,7 +18,10 @@ it('Timer shall return the default state when passed no state and a non valid op
     time: 1500,
     isWorking: true,
     isTicking: false,
-    cyclesComplete: 0 
+    cyclesComplete: 0,
+    alert: undefined,
+    expireTime: undefined,
+    downTime: 0
   }
 
   expect(state).toEqual(expected);
@@ -30,8 +33,10 @@ it('Timer shall toggle the timer when passed the action TOGGLE_TIMER', () => {
   store.dispatch(toggleClock());
 
   const isTicking = store.getState().isTicking;
-  const expected = true;
-  expect(isTicking).toBe(true);
+  const expireTime = store.getState().expireTime;
+  const expectedTicking = true;
+  expect(isTicking).toBe(expectedTicking);
+  expect(expireTime).toBeGreaterThan((new Date()).getTime());
 });
 
 it('Timer shall decrement the amount of time by one when passed the action TICK_TIMER.', () => {
@@ -45,7 +50,9 @@ it('Timer shall decrement the amount of time by one when passed the action TICK_
       isWorking: true,
       isTicking: true,
       cyclesComplete: 0,
-      alert: undefined
+      alert: undefined,
+      expireTime: undefined,
+      downTime: 0
     }
   );
 
@@ -56,11 +63,13 @@ it('Timer shall decrement the amount of time by one when passed the action TICK_
       restTime: 300,
       extRestTime: 900,
       restIncrement: 4,
-      time: 1499,
-      isWorking: true,
-      isTicking: true,
-      cyclesComplete: 0,
-      alert: undefined
+      time: 300,
+      isWorking: false,
+      isTicking: false,
+      cyclesComplete: 1,
+      alert: undefined,
+      expireTime: undefined,
+      downTime: 0
   };
   expect(state).toEqual(expected);
 });
