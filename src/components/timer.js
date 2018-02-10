@@ -25,7 +25,7 @@ export default class Timer extends React.Component{
     if (!this.timeout){
       this.timeout = setInterval(() => {
         this.props.tick();
-      }, 1000);
+      }, 100);
     }
   }
 
@@ -41,7 +41,7 @@ export default class Timer extends React.Component{
   /**
    * JSX based render function.
    */
-  render(){
+  render() {
     let wrapper = {
       "width" : "151px",
     }

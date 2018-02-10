@@ -25,7 +25,7 @@ export default class ClockDisplay extends React.Component{
       "display" : "inline-block",
     }
     const rawMinute = Math.floor(this.props.time / 60);
-    const rawSecond = this.props.time % 60;
+    const rawSecond = Math.floor(this.props.time % 60);
     const minute = (((rawMinute + "").length < 2) ? '0' : '') + rawMinute;
     const second = (((rawSecond + "").length < 2) ? '0' : '') + rawSecond;
 
