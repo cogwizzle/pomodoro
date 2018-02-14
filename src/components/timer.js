@@ -52,7 +52,7 @@ export default class Timer extends React.Component{
       <div className="pomodoro-timer" style={wrapper}>
         <ClockDisplay time={this.props.time} />
         <PomodoroTimerControls />
-        <Bell expireTime={this.props.expireTime} alert={this.props.alert} isTicking={this.props.isTicking} ring={this.props.ring} toggleRing={this.props.toggleRing}/>
+        <Bell alert={this.props.alert} ring={this.props.ring} toggleRing={this.props.toggleRing}/>
       </div>
     );
   }

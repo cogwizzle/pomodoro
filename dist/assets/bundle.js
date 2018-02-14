@@ -23793,7 +23793,6 @@ var mergeProps = function mergeProps(stateProps, dispatchProps, ownProps) {
       if (stateProps.isTicking) dispatchProps.dispatchTick();
     },
     time: stateProps.time,
-    isTicking: stateProps.isTicking,
     alert: stateProps.alert,
     ring: stateProps.ring,
     toggleRing: dispatchProps.toggleRing
@@ -23908,7 +23907,7 @@ var Timer = function (_React$Component) {
         { className: 'pomodoro-timer', style: wrapper },
         _react2.default.createElement(_clock_display2.default, { time: this.props.time }),
         _react2.default.createElement(_pomodoroTimerControls2.default, null),
-        _react2.default.createElement(_bell2.default, { expireTime: this.props.expireTime, alert: this.props.alert, isTicking: this.props.isTicking, ring: this.props.ring, toggleRing: this.props.toggleRing })
+        _react2.default.createElement(_bell2.default, { alert: this.props.alert, ring: this.props.ring, toggleRing: this.props.toggleRing })
       );
     }
   }]);

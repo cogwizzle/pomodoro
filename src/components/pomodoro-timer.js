@@ -32,7 +32,6 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
       dispatchProps.dispatchTick();
   },
   time: stateProps.time,
-  isTicking: stateProps.isTicking,
   alert: stateProps.alert,
   ring: stateProps.ring,
   toggleRing: dispatchProps.toggleRing
