@@ -1,6 +1,6 @@
 import Timer from './timer';
 import { connect } from 'react-redux';
-import { tickClock } from '../creators/timer_creators';
+import { tickClock, ringToggle } from '../creators/timer_creators';
 
 const mapStateToProps = (state) => ({
   isTicking: state.isTicking,
@@ -20,7 +20,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     dispatch(tickClock());
   },
   toggleRing: () => {
-    dispatch({type: 'TOGGLE_RING'});
+    dispatch(ringToggle());
   }
 });
 

@@ -11514,10 +11514,17 @@ var setTime = function setTime(time, working) {
   };
 };
 
+var ringToggle = function ringToggle() {
+  return {
+    type: 'TOGGLE_RING'
+  };
+};
+
 module.exports = {
   tickClock: tickClock,
   toggleClock: toggleClock,
-  setTime: setTime
+  setTime: setTime,
+  ringToggle: ringToggle
 };
 
 /***/ }),
@@ -23774,7 +23781,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
       dispatch((0, _timer_creators.tickClock)());
     },
     toggleRing: function toggleRing() {
-      dispatch({ type: 'TOGGLE_RING' });
+      dispatch((0, _timer_creators.ringToggle)());
     }
   };
 };
