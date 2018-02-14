@@ -13,7 +13,8 @@ function Timer(
     cyclesComplete: 0,
     alert: undefined,
     expireTime: undefined,
-    downTime: 0
+    downTime: 0,
+    ring: false
   },
   action) {
   switch(action.type) {
@@ -56,9 +57,7 @@ function Timer(
       } else if (nextState.isTicking) {
 
         // If alert is set play audio.
-        if (state.alert){
-            new Audio(state.alert).play();
-        }
+        nextState.ring = true;
 
         // Stop timer from ticking.
         nextState.isTicking = false;
@@ -96,6 +95,9 @@ function Timer(
         time: action.time,
         isWorking: (action.hasOwnProperty('working')) ? action.working : !state.isWorking
       }};
+    case 'TOGGLE_RING':
+
+      return {...state, ...{ring: !state.ring}};
     default:
 
       return state;
