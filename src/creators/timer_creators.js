@@ -12,8 +12,13 @@ const setTime = (time, working) => ({
   isWorking: working
 });
 
+const ringToggle = () => ({
+  type: 'TOGGLE_RING'
+});
+
 module.exports = {
   tickClock,
   toggleClock,
-  setTime
+  setTime,
+  ringToggle
 };

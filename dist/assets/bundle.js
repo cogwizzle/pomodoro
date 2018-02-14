@@ -11514,10 +11514,17 @@ var setTime = function setTime(time, working) {
   };
 };
 
+var ringToggle = function ringToggle() {
+  return {
+    type: 'TOGGLE_RING'
+  };
+};
+
 module.exports = {
   tickClock: tickClock,
   toggleClock: toggleClock,
-  setTime: setTime
+  setTime: setTime,
+  ringToggle: ringToggle
 };
 
 /***/ }),
@@ -23762,7 +23769,9 @@ var mapStateToProps = function mapStateToProps(state) {
     workTime: state.workTime,
     restTime: state.restTime,
     extRestTime: state.extRestTime,
-    restIncrement: state.restIncrement
+    restIncrement: state.restIncrement,
+    alert: state.alert,
+    ring: state.ring
   };
 };
 
@@ -23770,6 +23779,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
   return {
     dispatchTick: function dispatchTick() {
       dispatch((0, _timer_creators.tickClock)());
+    },
+    toggleRing: function toggleRing() {
+      dispatch((0, _timer_creators.ringToggle)());
     }
   };
 };
@@ -23780,7 +23792,10 @@ var mergeProps = function mergeProps(stateProps, dispatchProps, ownProps) {
 
       if (stateProps.isTicking) dispatchProps.dispatchTick();
     },
-    time: stateProps.time
+    time: stateProps.time,
+    alert: stateProps.alert,
+    ring: stateProps.ring,
+    toggleRing: dispatchProps.toggleRing
   };
 };
 
@@ -23814,6 +23829,10 @@ var _clock_display2 = _interopRequireDefault(_clock_display);
 var _pomodoroTimerControls = __webpack_require__(210);
 
 var _pomodoroTimerControls2 = _interopRequireDefault(_pomodoroTimerControls);
+
+var _bell = __webpack_require__(262);
+
+var _bell2 = _interopRequireDefault(_bell);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -23887,7 +23906,8 @@ var Timer = function (_React$Component) {
         'div',
         { className: 'pomodoro-timer', style: wrapper },
         _react2.default.createElement(_clock_display2.default, { time: this.props.time }),
-        _react2.default.createElement(_pomodoroTimerControls2.default, null)
+        _react2.default.createElement(_pomodoroTimerControls2.default, null),
+        _react2.default.createElement(_bell2.default, { alert: this.props.alert, ring: this.props.ring, toggleRing: this.props.toggleRing })
       );
     }
   }]);
@@ -26168,7 +26188,8 @@ function Timer() {
     cyclesComplete: 0,
     alert: undefined,
     expireTime: undefined,
-    downTime: 0
+    downTime: 0,
+    ring: false
   };
   var action = arguments[1];
 
@@ -26212,9 +26233,7 @@ function Timer() {
       } else if (nextState.isTicking) {
 
         // If alert is set play audio.
-        if (state.alert) {
-          new Audio(state.alert).play();
-        }
+        nextState.ring = true;
 
         // Stop timer from ticking.
         nextState.isTicking = false;
@@ -26252,6 +26271,9 @@ function Timer() {
         time: action.time,
         isWorking: action.hasOwnProperty('working') ? action.working : !state.isWorking
       });
+    case 'TOGGLE_RING':
+
+      return _extends({}, state, { ring: !state.ring });
     default:
 
       return state;
@@ -26840,6 +26862,87 @@ function isObjectLike(value) {
 
 module.exports = isObjectLike;
 
+
+/***/ }),
+/* 262 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(16);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/**
+ * React component for alerting that time has expired.
+ * Requires:
+ *  ring property that designates if the element should ring.
+ *  alert proprty passing the sound source to the element.
+ *  toggleRing function that allows the component to toggle the ring state.
+ */
+var Bell = function (_React$Component) {
+  _inherits(Bell, _React$Component);
+
+  /**
+   * Default constructor.
+   *
+   * @param {Object[]} props Tag properties.
+   */
+  function Bell(props) {
+    _classCallCheck(this, Bell);
+
+    return _possibleConstructorReturn(this, (Bell.__proto__ || Object.getPrototypeOf(Bell)).call(this, props));
+  }
+
+  /**
+   * JSX based render function.
+   *
+   * @return {string} JSX DOM.
+   */
+
+
+  _createClass(Bell, [{
+    key: 'render',
+    value: function render() {
+      var _this2 = this;
+
+      Notification.requestPermission(function (permission) {
+
+        if (_this2.props.ring) {
+
+          if (_this2.props.alert) new Audio(_this2.props.alert).play();
+
+          if (permission === 'granted') {
+
+            var notification = new Notification('Timer expired!');
+          }
+
+          _this2.props.toggleRing();
+        }
+      });
+      return null;
+    }
+  }]);
+
+  return Bell;
+}(_react2.default.Component);
+
+exports.default = Bell;
 
 /***/ })
 /******/ ]);
