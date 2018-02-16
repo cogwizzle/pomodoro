@@ -18,6 +18,32 @@ export default class Bell extends React.Component {
     super(props);
   }
 
+  componentDidUpdate() {
+    if (Notification.permission === 'default') {
+
+      Notification.requestPermission(permission => {
+
+        if (permission === 'granted') {
+
+          let notification = new Notification('Notifications on.');
+        }
+      });
+    }
+
+    if(this.props.ring){
+
+      if(this.props.alert)
+        new Audio(this.props.alert).play();
+
+      if(Notification.permission === 'granted') {
+
+        let notification = new Notification('Timer expired!');
+      }
+
+      this.props.toggleRing();
+    }
+  }
+
   /**
    * JSX based render function.
    *
@@ -25,21 +51,6 @@ export default class Bell extends React.Component {
    */
   render() {
 
-    Notification.requestPermission(permission => {
-
-      if(this.props.ring){
-        
-        if(this.props.alert)
-          new Audio(this.props.alert).play();
-        
-        if(permission === 'granted') {
-
-          let notification = new Notification('Timer expired!');
-        }
-
-        this.props.toggleRing();
-      }
-    });
     return null;
   }
 }
