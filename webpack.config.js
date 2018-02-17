@@ -31,6 +31,11 @@ var config = {
         loader: 'url-loader?limit=100000' 
       }
     ]
+  },
+  devServer: {
+    contentBase: path.join(__dirname, "dist"),
+    compress: true,
+    port: 8080 
   }
 };
 

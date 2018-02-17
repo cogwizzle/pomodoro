@@ -4,7 +4,8 @@
   "description": "A react test app.",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "start:dev": "webpack-dev-server"
   },
   "repository": {
     "type": "git",
@@ -40,7 +41,8 @@
     "react-router": "^4.1.1",
     "style-loader": "^0.20.1",
     "url-loader": "^0.6.2",
-    "webpack": "^3.10.0"
+    "webpack": "^3.10.0",
+    "webpack-dev-server": "^2.11.1"
   },
   "dependencies": {
     "lodash": "^4.17.5",
