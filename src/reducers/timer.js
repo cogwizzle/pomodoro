@@ -93,7 +93,7 @@ function Timer(
 
       return {...state, ...{
         time: action.time,
-        isWorking: (action.hasOwnProperty('working')) ? action.working : !state.isWorking
+        isWorking: (action.hasOwnProperty('working') && action.working !== undefined) ? action.working : !state.isWorking
       }};
     case 'TOGGLE_RING':
 
@@ -104,11 +104,11 @@ function Timer(
   }
 }
 
-function convertSecToMilli(milli) {
+const convertSecToMilli = milli => {
   return milli * 1000;
 }
 
-function convertMilliToSec(epoch) {
+const convertMilliToSec = epoch => {
   return epoch / 1000;
 }
 

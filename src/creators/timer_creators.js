@@ -9,7 +9,7 @@ const toggleClock = () => ({
 const setTime = (time, working) => ({
   type: 'SET_TIMER',
   time: time,
-  isWorking: working
+  working: working
 });
 
 const ringToggle = () => ({
