@@ -5,7 +5,7 @@ import RoundHouse from '../sounds/Roundhouse Kick-SoundBible.com-1663225804.mp3'
  */
 const saveState = (state) => {
   localStorage.setItem('pomodoro', JSON.stringify(state));
-}
+};
 
 /**
  * Load the application state.

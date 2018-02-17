@@ -106,10 +106,10 @@ function Timer(
 
 const convertSecToMilli = milli => {
   return milli * 1000;
-}
+};
 
 const convertMilliToSec = epoch => {
   return epoch / 1000;
-}
+};
 
 module.exports = Timer;
