@@ -21,7 +21,7 @@ it('Timer shall return the default state when passed no state and a non valid op
     expireTime: undefined,
     downTime: 0,
     ring: false
-  }
+  };
 
   expect(state).toEqual(expected);
 });
