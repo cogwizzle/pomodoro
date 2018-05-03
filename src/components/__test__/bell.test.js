@@ -6,7 +6,15 @@ import Notification from '../__mocks__/notification.mock.js';
 let toggleRingCount = 0;
 let notificationCreated = 0;
 
-global.Notification = Notification;
+global.Notification = {
+  requestPermission : permission => {
+    console.log('permission: ', permission);
+  },
+  reset: () => {
+  
+  },
+  permission: 'default'
+};
 
 beforeEach(() => {
   toggleRingCount = 0;
@@ -15,10 +23,10 @@ beforeEach(() => {
 
 it(`Bell component shall request permission for notifications when the component updates.`, () => {
 
-  console.log('renderer: ', renderer);
-  let renderer = Renderer.render(
+  let requestPermissionCall = jest.spyOn(Notification, 'requestPermission');
+  let renderer = Renderer.create(
     <Bell ring={false} toggleRing={() => (++toggleRing)}/>
   );
 
-  expect(requstPermissionCall).toHaveBeenCalled();
+  expect(requestPermissionCall).toHaveBeenCalled();
 });
