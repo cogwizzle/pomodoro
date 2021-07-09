@@ -46,7 +46,6 @@ export default class Timer extends React.Component{
     let wrapper = {
       "width" : "151px",
     }
-    const { store } = this.context;
 
     return(
       <div className="pomodoro-timer" style={wrapper}>
